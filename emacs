@@ -30,3 +30,8 @@ Return a list of installed packages or nil for every skipped package."
 ;; ---------------------------------------------------------------------------
 ;; UI
 (load-theme 'tango-dark t)
+
+
+(ensure-package-installed 'magit)
+
+(ensure-package-installed 'haskell-mode)
