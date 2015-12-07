@@ -46,4 +46,6 @@ Return a list of installed packages or nil for every skipped package."
 ;; Magit
 (ensure-package-installed 'magit)
 
+;; ---------------------------------------------------------------------------
+;; Haskell
 (ensure-package-installed 'haskell-mode)
