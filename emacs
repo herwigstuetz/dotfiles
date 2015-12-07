@@ -55,6 +55,8 @@ Return a list of installed packages or nil for every skipped package."
 ;; Magit
 (ensure-package-installed 'magit)
 
+(global-set-key (kbd "C-x g") 'magit-status)
+
 ;; ---------------------------------------------------------------------------
 ;; Haskell
 (ensure-package-installed 'haskell-mode)
