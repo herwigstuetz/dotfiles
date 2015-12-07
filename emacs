@@ -31,8 +31,16 @@ Return a list of installed packages or nil for every skipped package."
 
 ;; ---------------------------------------------------------------------------
 ;; UI
-(load-theme 'tango-dark t)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 
+(setq inhibit-startup-message t)
+
+(column-number-mode t)
+
+(ensure-package-installed 'atom-one-dark-theme)
+(load-theme 'atom-one-dark t)
 
 (ensure-package-installed 'magit)
 
