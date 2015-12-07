@@ -1,3 +1,5 @@
+;; -*- mode: Lisp -*-
+
 ;; ---------------------------------------------------------------------------
 ;; From http://stackoverflow.com/questions/10092322/how-to-automatically-install-emacs-packages-by-specifying-a-list-of-package-name
 (defun ensure-package-installed (&rest packages)
