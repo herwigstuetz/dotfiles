@@ -26,3 +26,8 @@ fi
 
 # custom variables
 export EDITOR=emacs
+
+# if stack is installed add autocompletion
+if command -v stack >/dev/null 2>&1; then
+   eval "$(stack --bash-completion-script stack)"
+fi
