@@ -170,3 +170,4 @@ Return a list of installed packages or nil for every skipped package."
 (global-set-key (kbd "C-x C-0") 'delete-window)
 
 (add-to-list 'god-exempt-major-modes 'dired-mode)
+(add-to-list 'god-exempt-major-modes 'magit-mode)
