@@ -54,6 +54,11 @@ Return a list of installed packages or nil for every skipped package."
 
 (column-number-mode t)
 
+(show-paren-mode 1)
+(size-indication-mode 1)
+
+(fset 'yes-or-no-p 'y-or-n-p)
+
 (ensure-package-installed 'atom-one-dark-theme)
 (load-theme 'atom-one-dark t)
 
