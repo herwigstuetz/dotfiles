@@ -138,7 +138,7 @@ Return a list of installed packages or nil for every skipped package."
       (setq company-ghc-show-info nil)
     (setq company-ghc-show-info t)))
 
-
+;; might be problematic if buffer contains errors
 (setq company-ghc-show-info t)
 
 ;; ---------------------------------------------------------------------------
