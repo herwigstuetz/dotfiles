@@ -38,6 +38,12 @@ Return a list of installed packages or nil for every skipped package."
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
+;; normalization of files
+(setq require-final-newline t)
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+
 ;; ---------------------------------------------------------------------------
 ;; UI
 (menu-bar-mode -1)
