@@ -70,7 +70,76 @@ Return a list of installed packages or nil for every skipped package."
 
 ;; ---------------------------------------------------------------------------
 ;; Haskell
+
+;; haskell-mode
 (ensure-package-installed 'haskell-mode)
+
+;; Add haskell executables installed by stack to path
+(let ((stack-path (expand-file-name "~/.local/bin")))
+  (setenv "PATH" (concat stack-path path-separator (getenv "PATH")))
+  (add-to-list 'exec-path stack-path))
+
+;; use hasktags
+(custom-set-variables '(haskell-tags-on-save t))
+
+
+(eval-after-load 'haskell-mode
+          '(define-key haskell-mode-map [f8] 'haskell-navigate-imports))
+
+(eval-after-load 'haskell-mode
+          '(define-key haskell-mode-map [f5] 'haskell-stylish-buffer))
+
+
+;; enable keybindings for interactive mode
+(require 'haskell-interactive-mode)
+(require 'haskell-process)
+(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+
+(setq haskell-process-suggest-remove-import-lines t)
+(setq haskell-process-auto-import-loaded-modules t)
+(setq haskell-process-log t)
+
+;; haskell-mode bindings
+(define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
+(define-key haskell-mode-map (kbd "C-`") 'haskell-interactive-bring)
+(define-key haskell-mode-map (kbd "C-c C-t") 'haskell-process-do-type)
+(define-key haskell-mode-map (kbd "C-c C-i") 'haskell-process-do-info)
+(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
+(define-key haskell-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
+(define-key haskell-mode-map (kbd "C-c c") 'haskell-process-cabal)
+(define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)
+
+;; cabal-mode bindings
+(define-key haskell-cabal-mode-map (kbd "C-`") 'haskell-interactive-bring)
+(define-key haskell-cabal-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
+(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
+(define-key haskell-cabal-mode-map (kbd "C-c c") 'haskell-process-cabal)
+
+(setq haskell-process-type 'stack-ghci)
+
+;; print output of do-type and do-info in separate buffer
+(setq haskell-process-use-presentation-mode t)
+
+
+;; ghc-mod
+(ensure-package-installed 'company-ghc)
+
+;; make sure ghc-mod is started when haskell-mode is
+(autoload 'ghc-init "ghc" nil t)
+(autoload 'ghc-debug "ghc" nil t)
+(add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+
+(global-company-mode t)
+(add-to-list 'company-backends 'company-ghc)
+
+(defun company-ghc-toggle-show-info ()
+  (interactive)
+  (if company-ghc-show-info
+      (setq company-ghc-show-info nil)
+    (setq company-ghc-show-info t)))
+
+
+(setq company-ghc-show-info t)
 
 ;; ---------------------------------------------------------------------------
 ;; God-mode
