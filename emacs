@@ -131,6 +131,7 @@ Return a list of installed packages or nil for every skipped package."
 
 (global-company-mode t)
 (add-to-list 'company-backends 'company-ghc)
+(global-set-key (kbd "C-x TAB") 'company-complete)
 
 (defun company-ghc-toggle-show-info ()
   (interactive)
