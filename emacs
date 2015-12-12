@@ -171,3 +171,16 @@ Return a list of installed packages or nil for every skipped package."
 
 (add-to-list 'god-exempt-major-modes 'dired-mode)
 (add-to-list 'god-exempt-major-modes 'magit-mode)
+
+
+;; ---------------------------------------------------------------------------
+;; multiple-cursors
+(ensure-package-installed 'multiple-cursors)
+
+(require 'multiple-cursors)
+
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
