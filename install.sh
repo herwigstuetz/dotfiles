@@ -10,6 +10,7 @@ mv $HOME/.profile ./$BACKUP/profile
 mv $HOME/.bashrc ./$BACKUP/bashrc
 mv $HOME/.gitconfig ./$BACKUP/gitconfig
 mv $HOME/.emacs ./$BACKUP/emacs
+mv $HOME/.emacs.d ./$BACKUP/emacs.d
 
 # install dotfiles
 ln -rs ./profile $HOME/.profile
