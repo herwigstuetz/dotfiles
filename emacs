@@ -99,6 +99,13 @@ Return a list of installed packages or nil for every skipped package."
 (setq haskell-process-auto-import-loaded-modules t)
 (setq haskell-process-log t)
 
+(defun haskell-insert-undefined ()
+  (interactive)
+  (insert "undefined"))
+
+(define-key haskell-mode-map (kbd "C-c C-u") 'haskell-insert-undefined)
+
+
 ;; haskell-mode bindings
 (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
 (define-key haskell-mode-map (kbd "C-`") 'haskell-interactive-bring)
