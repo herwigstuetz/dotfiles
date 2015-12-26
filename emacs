@@ -185,3 +185,10 @@ Return a list of installed packages or nil for every skipped package."
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+
+;; ---------------------------------------------------------------------------
+;; LaTeX
+(ensure-package-installed 'auctex)
+
+
