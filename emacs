@@ -62,6 +62,8 @@ Return a list of installed packages or nil for every skipped package."
 (ensure-package-installed 'atom-one-dark-theme)
 (load-theme 'atom-one-dark t)
 
+(set-face-attribute 'default nil :height 100)
+
 ;; ---------------------------------------------------------------------------
 ;; Magit
 (ensure-package-installed 'magit)
