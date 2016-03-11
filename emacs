@@ -3,7 +3,7 @@
 ;; ---------------------------------------------------------------------------
 ;; Packages
 
-;; From http://stackoverflow.com/questions/10092322/how-to-automatically-install-emacs-packages-by-specifying-a-list-of-package-name
+; From http://stackoverflow.com/questions/10092322/how-to-automatically-install-emacs-packages-by-specifying-a-list-of-package-name
 (defun ensure-package-installed (&rest packages)
   "Assure every package is installed, ask for installation if it’s not.
 
@@ -24,7 +24,7 @@ Return a list of installed packages or nil for every skipped package."
 
 (package-initialize)
 
-;; make sure to have downloaded archive description.
+; make sure to have downloaded archive description.
 (or (file-exists-p package-user-dir)
     (package-refresh-contents))
 
@@ -32,13 +32,13 @@ Return a list of installed packages or nil for every skipped package."
 ;; ---------------------------------------------------------------------------
 ;; General
 
-;; store all backup and autosave files in the tmp dir
+; store all backup and autosave files in the tmp dir
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-;; normalization of files
+; normalization of files
 (setq require-final-newline t)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -73,16 +73,16 @@ Return a list of installed packages or nil for every skipped package."
 ;; ---------------------------------------------------------------------------
 ;; Haskell
 
-;; haskell-mode
+; haskell-mode
 (ensure-package-installed 'haskell-mode)
 
-;; Add haskell executables installed by stack to path
+; Add haskell executables installed by stack to path
 (let ((stack-path (expand-file-name "~/.local/bin")))
   (setenv "PATH" (concat stack-path path-separator (getenv "PATH")))
   (add-to-list 'exec-path stack-path))
 
-;; use hasktags
 (custom-set-variables '(haskell-tags-on-save t))
+; use hasktags
 
 
 (eval-after-load 'haskell-mode
@@ -92,7 +92,7 @@ Return a list of installed packages or nil for every skipped package."
           '(define-key haskell-mode-map [f5] 'haskell-stylish-buffer))
 
 
-;; enable keybindings for interactive mode
+; enable keybindings for interactive mode
 (require 'haskell-interactive-mode)
 (require 'haskell-process)
 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
@@ -108,7 +108,7 @@ Return a list of installed packages or nil for every skipped package."
 (define-key haskell-mode-map (kbd "C-c C-u") 'haskell-insert-undefined)
 
 
-;; haskell-mode bindings
+; haskell-mode bindings
 (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
 (define-key haskell-mode-map (kbd "C-`") 'haskell-interactive-bring)
 (define-key haskell-mode-map (kbd "C-c C-t") 'haskell-process-do-type)
@@ -118,7 +118,7 @@ Return a list of installed packages or nil for every skipped package."
 (define-key haskell-mode-map (kbd "C-c c") 'haskell-process-cabal)
 (define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)
 
-;; cabal-mode bindings
+; cabal-mode bindings
 (define-key haskell-cabal-mode-map (kbd "C-`") 'haskell-interactive-bring)
 (define-key haskell-cabal-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
 (define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
@@ -126,14 +126,14 @@ Return a list of installed packages or nil for every skipped package."
 
 (setq haskell-process-type 'stack-ghci)
 
-;; print output of do-type and do-info in separate buffer
+; print output of do-type and do-info in separate buffer
 (setq haskell-process-use-presentation-mode t)
 
 
-;; ghc-mod
+; ghc-mod
 (ensure-package-installed 'company-ghc)
 
-;; make sure ghc-mod is started when haskell-mode is
+; make sure ghc-mod is started when haskell-mode is
 (autoload 'ghc-init "ghc" nil t)
 (autoload 'ghc-debug "ghc" nil t)
 (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
@@ -148,7 +148,7 @@ Return a list of installed packages or nil for every skipped package."
       (setq company-ghc-show-info nil)
     (setq company-ghc-show-info t)))
 
-;; might be problematic if buffer contains errors
+; might be problematic if buffer contains errors
 (setq company-ghc-show-info t)
 
 ;; ---------------------------------------------------------------------------
