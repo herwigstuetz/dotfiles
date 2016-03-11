@@ -43,6 +43,7 @@ Return a list of installed packages or nil for every skipped package."
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+(global-auto-revert-mode t)
 
 ;; ---------------------------------------------------------------------------
 ;; UI
