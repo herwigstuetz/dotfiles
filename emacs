@@ -224,6 +224,10 @@ Return a list of installed packages or nil for every skipped package."
 
 
 ;; ---------------------------------------------------------------------------
+;; R
+(ensure-package-installed 'ess)
+
+
 ;; Org-mode
 
 ;; Automatically set task to DONE if all children are DONE.
