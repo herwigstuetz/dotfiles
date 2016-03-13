@@ -99,13 +99,17 @@ Return a list of installed packages or nil for every skipped package."
 (ensure-package-installed 'haskell-mode)
 
 ; Add haskell executables installed by stack to path
+(if (eq system-type 'darwin)
+    ;; Add stack to path
+    (let ((stack-path (expand-file-name "/usr/local/bin")))
+      (setenv "PATH" (concat stack-path path-separator (getenv "PATH")))
+      (add-to-list 'exec-path stack-path)))
+
 (let ((stack-path (expand-file-name "~/.local/bin")))
   (setenv "PATH" (concat stack-path path-separator (getenv "PATH")))
   (add-to-list 'exec-path stack-path))
 
-(custom-set-variables '(haskell-tags-on-save t))
-; use hasktags
-
+(setq haskell-tags-on-save t)
 
 (eval-after-load 'haskell-mode
           '(define-key haskell-mode-map [f8] 'haskell-navigate-imports))
@@ -156,8 +160,8 @@ Return a list of installed packages or nil for every skipped package."
 (ensure-package-installed 'company-ghc)
 
 ; make sure ghc-mod is started when haskell-mode is
-(autoload 'ghc-init "ghc" nil t)
-(autoload 'ghc-debug "ghc" nil t)
+(autoload 'ghc-init "stack ghc" nil t)
+(autoload 'ghc-debug "stack ghc" nil t)
 (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
 
 (global-company-mode t)
