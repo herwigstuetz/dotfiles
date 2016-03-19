@@ -86,6 +86,9 @@ Return a list of installed packages or nil for every skipped package."
 ; Press [pause] key in each window you want to "freeze"
 (global-set-key [pause] 'toggle-window-dedicated)
 
+; Rainbow mode
+(ensure-package-installed 'rainbow-mode)
+
 ;; ---------------------------------------------------------------------------
 ;; Magit
 (ensure-package-installed 'magit)
