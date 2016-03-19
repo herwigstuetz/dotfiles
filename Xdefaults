@@ -1,0 +1,59 @@
+URxvt.font: xft:Ubuntu Mono:size=9
+URxvt.letterSpace: -1
+
+URxvt.scrollBar: false
+
+*foreground: #ABB2BF
+*background: #2F343D
+
+! Black/Gray
+*color0:  #2F343D
+*color8:  #3E4451
+
+! Red
+*color1:  #BE5046
+*color9:  #E06C75
+
+! Green
+*color2:  #98C379
+*color10: #98C379
+
+! Yellow
+*color3:  #D19A66
+*color11: #E5C07B
+
+! Blue
+*color4:  #528BFF
+*color12: #61AFEF
+
+! Magenta
+*color5:  #C678DD
+*color13: #C678DD
+
+! Cyan
+*color6:  #56B6C2
+*color14: #56B6C2
+
+! Gray/White
+*color7:  #828997
+*color15: #ABB2BF
+
+!    accent   #528BFF
+!    fg       #ABB2BF
+!    bg       #282C34
+!    bg-1     #121417
+!    bg-hl    #2F343D
+!    mono-1   #ABB2BF
+!    mono-2   #828997
+!    mono-3   #5C6370
+!    cyan     #56B6C2
+!    blue     #61AFEF
+!    purple   #C678DD
+!    green    #98C379
+!    red-1    #E06C75
+!    red-2    #BE5046
+!    orange-1 #D19A66
+!    orange-2 #E5C07B
+!    gray     #3E4451
+!    silver   #AAAAAA
+!    black    #0F1011
