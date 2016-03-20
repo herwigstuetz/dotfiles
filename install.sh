@@ -13,6 +13,7 @@ mv $HOME/.emacs ./$BACKUP/emacs
 mv $HOME/.emacs.d ./$BACKUP/emacs.d
 mv $HOME/.Xdefaults ./$BACKUP/Xdefaults
 mv $HOME/.xmonad ./$BACKUP/xmonad
+mv $HOME/.xmobarrc ./$BACKUP/xmobarrc
 
 # install dotfiles
 ln -rs ./profile $HOME/.profile
@@ -23,3 +24,4 @@ ln -rs ./Xdefaults $HOME/.Xdefaults
 
 mkdir $HOME/.xmonad
 ln -rs ./xmonad/xmonad.hs $HOME/.xmonad/xmonad.hs
+ln -rs ./xmobarrc $HOME/.xmobarrc
