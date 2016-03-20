@@ -21,7 +21,5 @@ ln -rs ./bashrc $HOME/.bashrc
 ln -rs ./gitconfig $HOME/.gitconfig
 ln -rs ./emacs $HOME/.emacs
 ln -rs ./Xdefaults $HOME/.Xdefaults
-
-mkdir $HOME/.xmonad
-ln -rs ./xmonad/xmonad.hs $HOME/.xmonad/xmonad.hs
+ln -rs ./xmonad/ $HOME/.xmonad/
 ln -rs ./xmobarrc $HOME/.xmobarrc
