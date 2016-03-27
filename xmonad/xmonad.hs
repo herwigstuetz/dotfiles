@@ -71,8 +71,7 @@ myFocusedBorderColor = "#333333"
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- launch a terminal
-    [ ((modm              , xK_Return), spawn $ XMonad.terminal conf)
-    , ((modm              , xK_t)     , spawn $ XMonad.terminal conf)
+    [ ((modm              , xK_t)     , spawn $ XMonad.terminal conf)
 
     -- launch emacs
     , ((modm              , xK_e     ), spawn "emacsclient -c")
@@ -144,10 +143,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
 
       -- Scratchpads
-    , ((modm              , xK_c),
+    , ((modm              , xK_Return),
        namedScratchpadAction scratchpads "term1")
 
-    , ((modm              , xK_v),
+    , ((modm .|. shiftMask, xK_Return),
        namedScratchpadAction scratchpads "term2")
 
     , ((modm              , xK_o),
