@@ -14,10 +14,21 @@ import System.Exit
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
+import XMonad.Hooks.ManageDocks (manageDocks, avoidStruts)
+import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat)
+
+import XMonad.Util.NamedScratchpad (NamedScratchpad(..), customFloating, namedScratchpadAction, namedScratchpadManageHook)
+
+import XMonad.Layout.Grid (Grid(..))
+import XMonad.Layout.MultiToggle (mkToggle, single, Toggle(..))
+import XMonad.Layout.MultiToggle.Instances (StdTransformers(FULL))
+import XMonad.Layout.NoBorders (smartBorders)
+import XMonad.Layout.Spacing (spacingWithEdge, incSpacing)
+
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
-myTerminal      = "rxvt-unicode"
+myTerminal      = "rxvt"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -29,14 +40,14 @@ myClickJustFocuses = True
 
 -- Width of the window border in pixels.
 --
-myBorderWidth   = 1
+myBorderWidth   = 0
 
 -- modMask lets you specify which modkey you want to use. The default
 -- is mod1Mask ("left alt").  You may also consider using mod3Mask
 -- ("right alt"), which does not conflict with emacs keybindings. The
 -- "windows key" is usually mod4Mask.
 --
-myModMask       = mod4Mask
+myModMask       = mod1Mask -- mod4Mask
 
 -- The default number of workspaces (virtual screens) and their names.
 -- By default we use numeric strings, but any string may be used as a
@@ -76,6 +87,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     --  Reset the layouts on the current workspace to default
     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
+
+      -- Layout
+    , ((modm              , xK_f)     , sendMessage $ Toggle FULL)
+    , ((modm              , xK_bracketright),   incSpacing (-2))
+    , ((modm              , xK_bracketleft) ,   incSpacing   2)
 
     -- Resize viewed windows to the correct size
     , ((modm,               xK_n     ), refresh)
@@ -122,11 +138,21 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     --
     -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
 
+      -- Scratchpads
+    , ((modm              , xK_c),
+       namedScratchpadAction scratchpads "term1")
+
+    , ((modm              , xK_v),
+       namedScratchpadAction scratchpads "term2")
+
+    , ((modm              , xK_o),
+       namedScratchpadAction scratchpads "ranger")
+
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
 
     -- Restart xmonad
-    , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
+    , ((modm              , xK_q     ), spawn "stack exec xmonad -- --recompile; xmonad --restart")
 
     -- Run xmessage with a summary of the default keybindings (useful for beginners)
 --    , ((modMask .|. shiftMask, xK_slash ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
@@ -181,7 +207,9 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = tiled ||| Mirror tiled ||| Full
+myLayout = avoidStruts . mkToggle (single FULL) . smartBorders .
+           spacingWithEdge 10 $
+             tiled ||| Mirror tiled |||  Grid ||| Full
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
@@ -210,11 +238,31 @@ myLayout = tiled ||| Mirror tiled ||| Full
 -- To match on the WM_NAME, you can use 'title' in the same way that
 -- 'className' and 'resource' are used below.
 --
-myManageHook = composeAll
+scratchpads :: [NamedScratchpad]
+scratchpads =
+    [ scratch "term1"  ""
+    , scratch "term2"  ""
+    , scratch "ranger" " -e ranger"
+    ]
+    where
+      scratchpadSize = W.RationalRect (1/5) (1/5) (3/5) (3/5)
+      mySPFloat      = customFloating scratchpadSize
+      -- Format Scratchpads
+      scratch label command = NS label (myTerminal ++ " -name " ++ label ++ command)
+                              (resource =? label)
+                              mySPFloat
+
+myManageHook = composeAll $
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore ]
+    ++
+    [ manageDocks
+    , (isFullscreen --> doFullFloat)
+    , namedScratchpadManageHook scratchpads
+    , manageHook def
+    ]
 
 ------------------------------------------------------------------------
 -- Event handling
