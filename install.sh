@@ -16,6 +16,7 @@ mv $HOME/.xmonad ./$BACKUP/xmonad
 mv $HOME/.xmobarrc ./$BACKUP/xmobarrc
 mv $HOME/.xinitrc ./$BACKUP/xinitrc
 mv $HOME/.xsession ./$BACKUP/xsession
+mv $HOME/.compton.conf ./$BACKUP/compton.conf
 
 # install dotfiles
 ln -rs ./profile $HOME/.profile
@@ -27,3 +28,4 @@ ln -rs ./xmonad $HOME/.xmonad
 ln -rs ./xmobarrc $HOME/.xmobarrc
 ln -rs ./xinitrc $HOME/.xinitrc
 ln -rs ./xsession $HOME/.xsession
+ln -rs ./compton.conf $HOME/.compton.conf
