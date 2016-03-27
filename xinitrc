@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+emacs --daemon
 compton --config ~/.compton.conf &
 urxvt &
-xmonad
+exec xmonad
