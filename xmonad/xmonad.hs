@@ -14,6 +14,8 @@ import System.Exit
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
+import Graphics.X11.ExtraTypes.XF86 (xF86XK_AudioLowerVolume, xF86XK_AudioRaiseVolume, xF86XK_AudioMute)
+
 import XMonad.Hooks.ManageDocks (manageDocks, avoidStruts)
 import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat)
 
@@ -143,7 +145,12 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     --
     -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
 
-      -- Scratchpads
+    -- Media Keys
+    , ((0, xF86XK_AudioLowerVolume   ), spawn "amixer set Master 2-")
+    , ((0, xF86XK_AudioRaiseVolume   ), spawn "amixer set Master 2+")
+    , ((0, xF86XK_AudioMute          ), spawn "amixer set Master toggle")
+
+    -- Scratchpads
     , ((modm              , xK_Return),
        namedScratchpadAction scratchpads "term1")
 
