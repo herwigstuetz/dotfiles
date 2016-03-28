@@ -18,6 +18,7 @@ import XMonad.Hooks.ManageDocks (manageDocks, avoidStruts)
 import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat)
 
 import XMonad.Util.NamedScratchpad (NamedScratchpad(..), customFloating, namedScratchpadAction, namedScratchpadManageHook)
+import XMonad.Util.Run (spawnPipe)
 
 import XMonad.Layout.Grid (Grid(..))
 import XMonad.Layout.MultiToggle (mkToggle, single, Toggle(..))
@@ -302,7 +303,9 @@ myStartupHook = return ()
 
 -- Run xmonad with the settings you specify. No need to modify this.
 --
-main = xmonad defaults
+main = do
+  xmproc <- spawnPipe "stack exec xmobar -- ~/.xmonad/xmobarrc.hs"
+  xmonad defaults
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
