@@ -219,7 +219,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = mkToggle (single FULL) . smartBorders . avoidStruts .
+myLayout = mkToggle (single FULL) . avoidStruts . smartBorders .
            spacingWithEdge 10 $
              tiled ||| Mirror tiled |||  Grid ||| Full
   where
