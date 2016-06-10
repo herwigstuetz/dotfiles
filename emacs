@@ -107,85 +107,88 @@ Return a list of installed packages or nil for every skipped package."
 
 ; haskell-mode
 (ensure-package-installed 'haskell-mode)
+(ensure-package-installed 'intero)
 
-; Add haskell executables installed by stack to path
-(if (eq system-type 'darwin)
-    ;; Add stack to path
-    (let ((stack-path (expand-file-name "/usr/local/bin")))
-      (setenv "PATH" (concat stack-path path-separator (getenv "PATH")))
-      (add-to-list 'exec-path stack-path)))
+(add-hook 'haskell-mode-hook 'intero-mode)
 
-(let ((stack-path (expand-file-name "~/.local/bin")))
-  (setenv "PATH" (concat stack-path path-separator (getenv "PATH")))
-  (add-to-list 'exec-path stack-path))
+;; ; Add haskell executables installed by stack to path
+;; (if (eq system-type 'darwin)
+;;     ;; Add stack to path
+;;     (let ((stack-path (expand-file-name "/usr/local/bin")))
+;;       (setenv "PATH" (concat stack-path path-separator (getenv "PATH")))
+;;       (add-to-list 'exec-path stack-path)))
 
-(setq haskell-tags-on-save t)
+;; (let ((stack-path (expand-file-name "~/.local/bin")))
+;;   (setenv "PATH" (concat stack-path path-separator (getenv "PATH")))
+;;   (add-to-list 'exec-path stack-path))
 
-(eval-after-load 'haskell-mode
-          '(define-key haskell-mode-map [f8] 'haskell-navigate-imports))
+;; (setq haskell-tags-on-save t)
 
-(eval-after-load 'haskell-mode
-          '(define-key haskell-mode-map [f5] 'haskell-stylish-buffer))
+;; (eval-after-load 'haskell-mode
+;;           '(define-key haskell-mode-map [f8] 'haskell-navigate-imports))
 
-
-; enable keybindings for interactive mode
-(require 'haskell-interactive-mode)
-(require 'haskell-process)
-(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-
-(setq haskell-process-suggest-remove-import-lines t)
-(setq haskell-process-auto-import-loaded-modules t)
-(setq haskell-process-log t)
-
-(defun haskell-insert-undefined ()
-  (interactive)
-  (insert "undefined"))
-
-(define-key haskell-mode-map (kbd "C-c C-u") 'haskell-insert-undefined)
+;; (eval-after-load 'haskell-mode
+;;           '(define-key haskell-mode-map [f5] 'haskell-stylish-buffer))
 
 
-; haskell-mode bindings
-(define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
-(define-key haskell-mode-map (kbd "C-`") 'haskell-interactive-bring)
-(define-key haskell-mode-map (kbd "C-c C-t") 'haskell-process-do-type)
-(define-key haskell-mode-map (kbd "C-c C-i") 'haskell-process-do-info)
-(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
-(define-key haskell-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
-(define-key haskell-mode-map (kbd "C-c c") 'haskell-process-cabal)
-;(define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)
+;; ; enable keybindings for interactive mode
+;; (require 'haskell-interactive-mode)
+;; (require 'haskell-process)
+;; (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
 
-; cabal-mode bindings
-(define-key haskell-cabal-mode-map (kbd "C-`") 'haskell-interactive-bring)
-(define-key haskell-cabal-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
-(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
-(define-key haskell-cabal-mode-map (kbd "C-c c") 'haskell-process-cabal)
+;; (setq haskell-process-suggest-remove-import-lines t)
+;; (setq haskell-process-auto-import-loaded-modules t)
+;; (setq haskell-process-log t)
 
-(setq haskell-process-type 'stack-ghci)
+;; (defun haskell-insert-undefined ()
+;;   (interactive)
+;;   (insert "undefined"))
 
-; print output of do-type and do-info in separate buffer
-(setq haskell-process-use-presentation-mode t)
+;; (define-key haskell-mode-map (kbd "C-c C-u") 'haskell-insert-undefined)
 
 
-; ghc-mod
-(ensure-package-installed 'company-ghc)
+;; ; haskell-mode bindings
+;; (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
+;; (define-key haskell-mode-map (kbd "C-`") 'haskell-interactive-bring)
+;; (define-key haskell-mode-map (kbd "C-c C-t") 'haskell-process-do-type)
+;; (define-key haskell-mode-map (kbd "C-c C-i") 'haskell-process-do-info)
+;; (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
+;; (define-key haskell-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
+;; (define-key haskell-mode-map (kbd "C-c c") 'haskell-process-cabal)
+;; ;(define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)
 
-; make sure ghc-mod is started when haskell-mode is
-(autoload 'ghc-init "stack ghc" nil t)
-(autoload 'ghc-debug "stack ghc" nil t)
-(add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+;; ; cabal-mode bindings
+;; (define-key haskell-cabal-mode-map (kbd "C-`") 'haskell-interactive-bring)
+;; (define-key haskell-cabal-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
+;; (define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
+;; (define-key haskell-cabal-mode-map (kbd "C-c c") 'haskell-process-cabal)
 
-(global-company-mode t)
-(add-to-list 'company-backends 'company-ghc)
-(global-set-key (kbd "C-x TAB") 'company-complete)
+;; (setq haskell-process-type 'stack-ghci)
 
-(defun company-ghc-toggle-show-info ()
-  (interactive)
-  (if company-ghc-show-info
-      (setq company-ghc-show-info nil)
-    (setq company-ghc-show-info t)))
+;; ; print output of do-type and do-info in separate buffer
+;; (setq haskell-process-use-presentation-mode t)
 
-; might be problematic if buffer contains errors
-(setq company-ghc-show-info t)
+
+;; ; ghc-mod
+;; (ensure-package-installed 'company-ghc)
+
+;; ; make sure ghc-mod is started when haskell-mode is
+;; (autoload 'ghc-init "stack ghc" nil t)
+;; (autoload 'ghc-debug "stack ghc" nil t)
+;; (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+
+;; (global-company-mode t)
+;; (add-to-list 'company-backends 'company-ghc)
+;; (global-set-key (kbd "C-x TAB") 'company-complete)
+
+;; (defun company-ghc-toggle-show-info ()
+;;   (interactive)
+;;   (if company-ghc-show-info
+;;       (setq company-ghc-show-info nil)
+;;     (setq company-ghc-show-info t)))
+
+;; ; might be problematic if buffer contains errors
+;; (setq company-ghc-show-info t)
 
 ;; ---------------------------------------------------------------------------
 ;; God-mode
