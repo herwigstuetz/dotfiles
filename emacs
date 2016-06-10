@@ -89,6 +89,13 @@ Return a list of installed packages or nil for every skipped package."
 ; Rainbow mode
 (ensure-package-installed 'rainbow-mode)
 
+; Speedbar
+(ensure-package-installed 'sr-speedbar)
+
+(global-set-key (kbd "C-c s") 'sr-speedbar-toggle)
+
+(speedbar-add-supported-extension ".hs")
+
 ;; ---------------------------------------------------------------------------
 ;; Magit
 (ensure-package-installed 'magit)
