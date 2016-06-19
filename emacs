@@ -97,6 +97,12 @@ Return a list of installed packages or nil for every skipped package."
 
 (speedbar-add-supported-extension ".hs")
 
+; switch-windows
+(ensure-package-installed 'switch-window)
+(global-set-key (kbd "M-P") 'switch-window)
+(global-set-key (kbd "M-C-p") 'switch-window-then-swap-buffer)
+
+
 ;; ---------------------------------------------------------------------------
 ;; Magit
 (ensure-package-installed 'magit)
