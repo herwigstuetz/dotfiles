@@ -30,6 +30,14 @@ Return a list of installed packages or nil for every skipped package."
 
 
 ;; ---------------------------------------------------------------------------
+;; MacOS specific
+
+(when (memq window-system '(mac ns))
+  (ensure-package-installed 'exec-path-from-shell)
+  (exec-path-from-shell-initialize))
+
+
+;; ---------------------------------------------------------------------------
 ;; General
 
 ; store all backup and autosave files in the tmp dir
