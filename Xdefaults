@@ -1,6 +1,10 @@
 URxvt.font: xft:Ubuntu Mono:size=9
 URxvt.letterSpace: -1
 
+URxvt.keysym.Shift-Control-V: perl:clipboard:paste
+URxvt.iso14755: False
+URxvt.perl-ext-common: default,clipboard
+
 URxvt.scrollBar: false
 
 *foreground: #ABB2BF
