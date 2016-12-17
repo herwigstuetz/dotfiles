@@ -103,8 +103,6 @@ Return a list of installed packages or nil for every skipped package."
 
 (global-set-key (kbd "C-c s") 'sr-speedbar-toggle)
 
-(speedbar-add-supported-extension ".hs")
-
 ; switch-windows
 (ensure-package-installed 'switch-window)
 (global-set-key (kbd "M-P") 'switch-window)
