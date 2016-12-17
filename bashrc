@@ -8,9 +8,9 @@ case $- in
       *) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
+# Avoid duplicates
 # See bash(1) for more options
-HISTCONTROL=ignoreboth
+HISTCONTROL=ignoreboth:ignoredups:erasedups
 
 # append to the history file, don't overwrite it
 shopt -s histappend
