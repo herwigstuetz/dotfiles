@@ -1,3 +1,5 @@
+! TODO: Move settings to new way (Xresources)
+
 URxvt.font: xft:Ubuntu Mono:size=9
 URxvt.letterSpace: -1
 
