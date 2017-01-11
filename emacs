@@ -125,6 +125,11 @@ Return a list of installed packages or nil for every skipped package."
 (add-hook 'haskell-mode-hook 'intero-mode)
 
 ;; ---------------------------------------------------------------------------
+;; yaml
+(ensure-package-installed 'yaml-mode)
+
+
+;; ---------------------------------------------------------------------------
 ;; God-mode
 (ensure-package-installed 'god-mode)
 
