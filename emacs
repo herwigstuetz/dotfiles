@@ -184,6 +184,11 @@ Return a list of installed packages or nil for every skipped package."
 (ensure-package-installed 'ess)
 
 
+;; ---------------------------------------------------------------------------
+;; markdown
+(ensure-package-installed 'markdown-mode)
+
+
 ;; Org-mode
 
 ; Must have org-mode loaded before we can configure org-babel
