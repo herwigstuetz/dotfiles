@@ -55,7 +55,10 @@ Return a list of installed packages or nil for every skipped package."
 
 ;; ---------------------------------------------------------------------------
 ;; UI
-(menu-bar-mode -1)
+; Do not disable the menu bar on MacOS since there it's on the top anyways.
+(if (eq system-type 'darwin)
+    (menu-bar-mode 1)
+  (menu-bar-mode -1))
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
@@ -68,11 +71,17 @@ Return a list of installed packages or nil for every skipped package."
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
-(ensure-package-installed 'atom-one-dark-theme)
-(load-theme 'atom-one-dark t)
+;(ensure-package-installed 'atom-one-dark-theme)
+;(load-theme 'atom-one-dark t)
+(load-theme 'tango-dark t)
 
-(set-face-attribute 'default nil :font "Ubuntu Mono")
-(set-face-attribute 'default nil :height 100)
+(cond
+ ((eq system-type 'darwin)
+  (set-face-attribute 'default nil :font "Fira Code")
+  (set-face-attribute 'default nil :height 120))
+ ((not (eq system-type 'darwin))
+  (set-face-attribute 'default nil :font "Ubuntu Mono")
+  (set-face-attribute 'default nil :height 100)))
 
 ;; Sticky Windows
 (defadvice pop-to-buffer (before cancel-other-window first)
