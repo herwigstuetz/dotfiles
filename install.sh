@@ -19,13 +19,13 @@ mv $HOME/.xsession ./$BACKUP/xsession
 mv $HOME/.compton.conf ./$BACKUP/compton.conf
 
 # install dotfiles
-ln -rs ./profile $HOME/.profile
-ln -rs ./bashrc $HOME/.bashrc
-ln -rs ./gitconfig $HOME/.gitconfig
-ln -rs ./emacs $HOME/.emacs
-ln -rs ./Xdefaults $HOME/.Xdefaults
-ln -rs ./Xmodmap $HOME/.Xmodmap
-ln -rs ./xmonad $HOME/.xmonad
-ln -rs ./xinitrc $HOME/.xinitrc
-ln -rs ./xsession $HOME/.xsession
-ln -rs ./compton.conf $HOME/.compton.conf
+ln -s `pwd`/profile $HOME/.profile
+ln -s `pwd`/bashrc $HOME/.bashrc
+ln -s `pwd`/gitconfig $HOME/.gitconfig
+ln -s `pwd`/emacs $HOME/.emacs
+ln -s `pwd`/Xdefaults $HOME/.Xdefaults
+ln -s `pwd`/Xmodmap $HOME/.Xmodmap
+ln -s `pwd`/xmonad $HOME/.xmonad
+ln -s `pwd`/xinitrc $HOME/.xinitrc
+ln -s `pwd`/xsession $HOME/.xsession
+ln -s `pwd`/compton.conf $HOME/.compton.conf
