@@ -137,6 +137,9 @@ Return a list of installed packages or nil for every skipped package."
 ;; yaml
 (ensure-package-installed 'yaml-mode)
 
+;; ---------------------------------------------------------------------------
+;; nix-mode
+(ensure-package-installed 'nix-mode)
 
 ;; ---------------------------------------------------------------------------
 ;; God-mode
