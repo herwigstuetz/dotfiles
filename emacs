@@ -62,6 +62,8 @@ Return a list of installed packages or nil for every skipped package."
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
+(setq ring-bell-function 'ignore)
+
 (setq inhibit-startup-message t)
 
 (column-number-mode t)
