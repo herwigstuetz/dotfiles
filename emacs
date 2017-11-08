@@ -111,8 +111,10 @@ Return a list of installed packages or nil for every skipped package."
 
 ; Speedbar
 (ensure-package-installed 'sr-speedbar)
+(setq sr-speedbar-right-side nil)
 
 (global-set-key (kbd "C-c s") 'sr-speedbar-toggle)
+(define-key speedbar-mode-map (kbd "q") 'sr-speedbar-toggle)
 
 ; switch-windows
 (ensure-package-installed 'switch-window)
@@ -134,6 +136,7 @@ Return a list of installed packages or nil for every skipped package."
 (ensure-package-installed 'intero)
 
 (add-hook 'haskell-mode-hook 'intero-mode)
+(speedbar-add-supported-extension ".hs")
 
 ;; ---------------------------------------------------------------------------
 ;; yaml
