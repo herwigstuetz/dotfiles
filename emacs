@@ -240,6 +240,15 @@ Return a list of installed packages or nil for every skipped package."
 (ensure-package-installed 'markdown-mode)
 
 
+;; ---------------------------------------------------------------------------
+;; auto-complete
+(ensure-package-installed 'company)
+
+(global-company-mode t)
+
+(global-set-key (kbd "C-c TAB") 'company-complete)
+
+
 ;; Org-mode
 
 ; Must have org-mode loaded before we can configure org-babel
