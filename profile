@@ -40,3 +40,9 @@ fi
 if [ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ] ; then
     source $HOME/.nix-profile/etc/profile.d/nix.sh
 fi
+
+if [ `uname` == "Darwin" ]; then
+    alias ls="ls -G"
+elif [ `uname` == "Linux" ]; then
+    alias ls="ls --color=auto"
+fi
