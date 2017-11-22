@@ -110,7 +110,12 @@ Return a list of installed packages or nil for every skipped package."
 (ensure-package-installed 'rainbow-mode)
 
 ; Speedbar
+(ensure-package-installed 'speedbar)
 (ensure-package-installed 'sr-speedbar)
+
+(require 'speedbar)
+(require 'sr-speedbar)
+
 (setq sr-speedbar-right-side nil)
 
 (global-set-key (kbd "C-c s") 'sr-speedbar-toggle)
