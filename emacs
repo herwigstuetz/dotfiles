@@ -167,6 +167,10 @@ Return a list of installed packages or nil for every skipped package."
 (ensure-package-installed 'nix-mode)
 
 ;; ---------------------------------------------------------------------------
+;; lsp-mode
+(ensure-package-installed 'lsp-mode)
+
+;; ---------------------------------------------------------------------------
 ;; God-mode
 (ensure-package-installed 'god-mode)
 
