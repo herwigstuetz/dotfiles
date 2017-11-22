@@ -284,6 +284,10 @@ Return a list of installed packages or nil for every skipped package."
 (setq org-latex-listings t)
 (setq org-latex-listings-langs (quote ((emacs-lisp "Lisp") (lisp "Lisp") (clojure "Lisp") (c "C") (cc "C++") (fortran "fortran") (perl "Perl") (cperl "Perl") (python "Python") (ruby "Ruby") (html "HTML") (xml "XML") (tex "TeX") (latex "TeX") (shell-script "bash") (gnuplot "Gnuplot") (ocaml "Caml") (caml "Caml") (sql "SQL") (sqlite "sql") (R-mode "R"))))
 
+(ensure-package-installed 'org-ref)
+(require 'org-ref)
+(require 'org-ref-latex)
+
 ;; ---------------------------------------------------------------------------
 ;; Customization
 
