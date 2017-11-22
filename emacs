@@ -130,6 +130,13 @@ Return a list of installed packages or nil for every skipped package."
 ;; ---------------------------------------------------------------------------
 ;; Magit
 (ensure-package-installed 'magit)
+(ensure-package-installed 'magit-lfs)
+
+(magit-wip-after-save-mode t)
+(magit-wip-after-apply-mode t)
+(magit-wip-before-change-mode t)
+
+(setq magit-diff-refine-hunk 'all)
 
 (global-set-key (kbd "C-x g") 'magit-status)
 
