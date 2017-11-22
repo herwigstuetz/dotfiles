@@ -218,6 +218,16 @@ Return a list of installed packages or nil for every skipped package."
 ;; ---------------------------------------------------------------------------
 ;; LaTeX
 (ensure-package-installed 'auctex)
+(ensure-package-installed 'mic-paren)
+
+(add-hook 'LaTeX-mode-hook
+	  (lambda ()
+	     (progn
+	       (paren-toggle-matching-quoted-paren 1)
+	       (paren-toggle-matching-paired-delimiter 1)
+
+	       (local-set-key (kbd "C-c ]") 'org-ref-helm-insert-cite-link)
+	       (local-set-key (kbd "C-c C-o") 'org-ref-latex-click))))
 
 
 ;; ---------------------------------------------------------------------------
