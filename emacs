@@ -159,6 +159,10 @@ Return a list of installed packages or nil for every skipped package."
 (ensure-package-installed 'yaml-mode)
 
 ;; ---------------------------------------------------------------------------
+;; Docker
+(ensure-package-installed 'dockerfile-mode)
+
+;; ---------------------------------------------------------------------------
 ;; nix-mode
 (ensure-package-installed 'nix-mode)
 
