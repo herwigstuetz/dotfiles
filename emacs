@@ -153,6 +153,9 @@ Return a list of installed packages or nil for every skipped package."
 (with-eval-after-load 'intero
   (flycheck-add-next-checker 'intero '(warning . haskell-hlint)))
 
+
+(setq haskell-stylish-on-save t)
+
 (speedbar-add-supported-extension ".hs")
 
 ;; ---------------------------------------------------------------------------
