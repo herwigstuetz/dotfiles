@@ -135,7 +135,6 @@ Return a list of installed packages or nil for every skipped package."
 
 (magit-wip-after-save-mode t)
 (magit-wip-after-apply-mode t)
-(magit-wip-before-change-mode t)
 
 (setq magit-diff-refine-hunk 'all)
 
