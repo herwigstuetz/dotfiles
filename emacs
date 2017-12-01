@@ -231,9 +231,8 @@ Return a list of installed packages or nil for every skipped package."
 	       (paren-toggle-matching-paired-delimiter 1)
 
 	       (local-set-key (kbd "C-c ]") 'org-ref-helm-insert-cite-link)
-	       (local-set-key (kbd "C-c C-o") 'org-ref-latex-click))))
-
-(add-to-list 'TeX-command-list '("Make" "make" TeX-run-command nil t))
+	       (local-set-key (kbd "C-c C-o") 'org-ref-latex-click)
+	       (add-to-list 'TeX-command-list '("Make" "make" TeX-run-command nil t)))))
 
 ;; ---------------------------------------------------------------------------
 ;; R
