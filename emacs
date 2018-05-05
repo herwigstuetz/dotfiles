@@ -161,8 +161,10 @@ Return a list of installed packages or nil for every skipped package."
 ; haskell-mode
 (ensure-package-installed 'haskell-mode)
 (ensure-package-installed 'intero)
+(ensure-package-installed 'company-ghc)
 
 (add-hook 'haskell-mode-hook 'intero-mode)
+(add-hook 'haskell-mode-hook 'company-mode)
 
 (with-eval-after-load 'intero
   (flycheck-add-next-checker 'intero '(warning . haskell-hlint)))
