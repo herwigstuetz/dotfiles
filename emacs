@@ -270,7 +270,7 @@ Return a list of installed packages or nil for every skipped package."
 (org-babel-do-load-languages
  'org-babel-load-languages
  '(
-   (sh . t)
+   (shell . t)
    (python . t)
    (R . t)
    (ruby . t)
