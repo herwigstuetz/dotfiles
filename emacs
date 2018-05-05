@@ -76,14 +76,15 @@ Return a list of installed packages or nil for every skipped package."
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;(ensure-package-installed 'atom-one-dark-theme)
-;(load-theme 'atom-one-dark t)
-(load-theme 'tango-dark t)
+(ensure-package-installed 'atom-one-dark-theme)
+(load-theme 'atom-one-dark t)
+;(load-theme 'tango-dark t)
 
 (cond
  ((eq system-type 'darwin)
   (set-face-attribute 'default nil :font "Fira Code")
-  (set-face-attribute 'default nil :height 120)
+;  (set-face-attribute 'default nil :font "Andale Mono")
+  (set-face-attribute 'default nil :height 140)
   (set-face-attribute 'default nil :weight 'ultra-light))
  ((not (eq system-type 'darwin))
   (set-face-attribute 'default nil :font "Ubuntu Mono")
