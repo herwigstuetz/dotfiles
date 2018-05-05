@@ -251,16 +251,13 @@ Return a list of installed packages or nil for every skipped package."
 	       (add-to-list 'TeX-command-list '("Make" "make" TeX-run-command nil t)))))
 
 ;; ---------------------------------------------------------------------------
-;; R
-(ensure-package-installed 'ess)
-
-
-;; ---------------------------------------------------------------------------
 ;; markdown
 (ensure-package-installed 'markdown-mode)
 
-
 ;; ---------------------------------------------------------------------------
+;; R
+(ensure-package-installed 'ess)
+(require 'ess)
 
 
 
