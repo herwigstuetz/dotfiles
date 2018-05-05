@@ -259,6 +259,10 @@ Return a list of installed packages or nil for every skipped package."
 (ensure-package-installed 'ess)
 (require 'ess)
 
+;; ---------------------------------------------------------------------------
+;; idris
+(ensure-package-installed 'idris-mode)
+(require 'idris-mode)
 
 
 ;; Org-mode
