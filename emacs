@@ -148,6 +148,8 @@ Return a list of installed packages or nil for every skipped package."
 (ensure-package-installed 'magit)
 (ensure-package-installed 'magit-lfs)
 
+(setq magit-save-repository-buffers nil)
+
 (magit-wip-after-save-mode t)
 (magit-wip-after-apply-mode t)
 
