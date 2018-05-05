@@ -19,8 +19,11 @@ Return a list of installed packages or nil for every skipped package."
    packages))
 
 (require 'package)
+
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives
+	     '("marmalade" . "http://marmalade-repo.org/packages/"))
 
 (package-initialize)
 
