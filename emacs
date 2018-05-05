@@ -133,6 +133,17 @@ Return a list of installed packages or nil for every skipped package."
 
 
 ;; ---------------------------------------------------------------------------
+;; auto-complete
+(ensure-package-installed 'company)
+
+(add-hook 'after-init-hook 'global-company-mode)
+
+(setq company-dabbrev-downcase nil)
+
+(global-set-key (kbd "C-c TAB") 'company-complete)
+
+
+;; ---------------------------------------------------------------------------
 ;; Magit
 (ensure-package-installed 'magit)
 (ensure-package-installed 'magit-lfs)
@@ -248,12 +259,7 @@ Return a list of installed packages or nil for every skipped package."
 
 
 ;; ---------------------------------------------------------------------------
-;; auto-complete
-(ensure-package-installed 'company)
 
-(global-company-mode t)
-
-(global-set-key (kbd "C-c TAB") 'company-complete)
 
 
 ;; Org-mode
