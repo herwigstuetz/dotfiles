@@ -255,6 +255,23 @@ Return a list of installed packages or nil for every skipped package."
 (ensure-package-installed 'ess)
 (require 'ess)
 
+
+;; ---------------------------------------------------------------------------
+;; python
+(ensure-package-installed 'python-mode)
+(require 'python-mode)
+
+(with-eval-after-load 'python
+  (defun python-shell-completion-native-try ()
+    "Return non-nil if can trigger native completion."
+    (let ((python-shell-completion-native-enable t)
+          (python-shell-completion-native-output-timeout
+           python-shell-completion-native-try-output-timeout))
+      (python-shell-completion-native-get-completions
+       (get-buffer-process (current-buffer))
+       nil "_"))))
+
+
 ;; ---------------------------------------------------------------------------
 ;; idris
 (ensure-package-installed 'idris-mode)
