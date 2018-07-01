@@ -90,12 +90,6 @@ Return a list of installed packages or nil for every skipped package."
   (set-face-attribute 'default nil :font "Ubuntu Mono")
   (set-face-attribute 'default nil :height 100)))
 
-;; Sticky Windows
-(defadvice pop-to-buffer (before cancel-other-window first)
-  (ad-set-arg 1 nil))
-
-(ad-activate 'pop-to-buffer)
-
 ; Toggle window dedication
 (defun toggle-window-dedicated ()
   "Toggle whether the current active window is dedicated or not"
