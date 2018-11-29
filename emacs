@@ -1,43 +1,51 @@
 ;; -*- mode: Lisp -*-
 
+;;; .emacs --- My emacs configuration
+;;; Commentary:
+;;; Code:
+
 ;; ---------------------------------------------------------------------------
 ;; Packages
 
-; From http://stackoverflow.com/questions/10092322/how-to-automatically-install-emacs-packages-by-specifying-a-list-of-package-name
-(defun ensure-package-installed (&rest packages)
-  "Assure every package is installed, ask for installation if it’s not.
-
-Return a list of installed packages or nil for every skipped package."
-  (mapcar
-   (lambda (package)
-     ;; (package-installed-p 'evil)
-     (if (package-installed-p package)
-         nil
-       (if (y-or-n-p (format "Package %s is missing. Install it? " package))
-           (package-install package)
-         package)))
-   packages))
-
 (require 'package)
-
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives
-	     '("marmalade" . "http://marmalade-repo.org/packages/"))
+             '("melpa" . "https://melpa.org/packages/") t)
 
-(package-initialize)
+(eval-when-compile
+  (package-initialize)
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+  (require 'use-package))
 
-; make sure to have downloaded archive description.
-(or (file-exists-p package-user-dir)
-    (package-refresh-contents))
+;(require 'diminish)                ;; if you use :diminish
+(require 'bind-key)                ;; if you use any :bind variant
 
 
-;; ---------------------------------------------------------------------------
-;; MacOS specific
-
-(when (memq window-system '(mac ns))
-  (ensure-package-installed 'exec-path-from-shell)
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns))
+  :ensure t
+  :config
   (exec-path-from-shell-initialize))
+
+
+;; Allow installation of system packages from emacs and use-package
+(use-package system-packages
+  :ensure t
+  :config
+  (setq system-packages-use-sudo t))
+;  (setq system-packages-package-manager 'brew))
+
+(use-package use-package-ensure-system-package
+  :ensure t)
+
+
+(use-package auto-package-update
+  :ensure t
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
 
 
 ;; ---------------------------------------------------------------------------
@@ -73,26 +81,32 @@ Return a list of installed packages or nil for every skipped package."
 
 (show-paren-mode 1)
 (size-indication-mode 1)
+(setq-default indent-tabs-mode nil)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
-(ensure-package-installed 'atom-one-dark-theme)
-(load-theme 'atom-one-dark t)
-;(load-theme 'tango-dark t)
+
+(use-package doom-themes
+  :ensure t
+  :config (load-theme 'doom-nord t))
 
 (cond
  ((eq system-type 'darwin)
   (set-face-attribute 'default nil :font "Fira Code")
-;  (set-face-attribute 'default nil :font "Andale Mono")
-  (set-face-attribute 'default nil :height 140)
-  (set-face-attribute 'default nil :weight 'ultra-light))
+  (set-face-attribute 'default nil :height 120)
+  (set-face-attribute 'default nil :weight 'ultra-light)
+  (add-to-list 'default-frame-alist '(ns-appearance . dark))
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (setq ns-use-proxy-icon nil)
+  (setq frame-title-format nil))
  ((not (eq system-type 'darwin))
   (set-face-attribute 'default nil :font "Ubuntu Mono")
   (set-face-attribute 'default nil :height 100)))
 
-; Toggle window dedication
+
+;; Toggle window dedication
 (defun toggle-window-dedicated ()
-  "Toggle whether the current active window is dedicated or not"
+  "Toggle whether the current active window is dedicated or not."
   (interactive)
   (message
    (if (let (window (get-buffer-window (current-buffer)))
@@ -105,216 +119,251 @@ Return a list of installed packages or nil for every skipped package."
 ; Press [pause] key in each window you want to "freeze"
 (global-set-key [pause] 'toggle-window-dedicated)
 
-; Rainbow mode
-(ensure-package-installed 'rainbow-mode)
 
-; Speedbar
-(ensure-package-installed 'speedbar)
-(ensure-package-installed 'sr-speedbar)
-
-(require 'speedbar)
-(require 'sr-speedbar)
-
-(setq sr-speedbar-right-side nil)
-
-(global-set-key (kbd "C-c s") 'sr-speedbar-toggle)
-(define-key speedbar-mode-map (kbd "q") 'sr-speedbar-toggle)
-
-; switch-windows
-(ensure-package-installed 'switch-window)
-(global-set-key (kbd "M-P") 'switch-window)
-(global-set-key (kbd "M-C-p") 'switch-window-then-swap-buffer)
+;; Folding
+(use-package origami
+  :ensure t
+  :commands (origami-open-node origami-close-node origami-open-node-recursively origami-close-node-recursively)
+  :bind
+  ("C-+" . origami-open-node-recursively)
+  ;("C-_" . origami-close-node-recursively) ;; C-_ bound to undo
+  ("C-=" . origami-open-node)
+  ("C--" . origami-close-node))
 
 
-;; ---------------------------------------------------------------------------
-;; auto-complete
-(ensure-package-installed 'company)
 
-(add-hook 'after-init-hook 'global-company-mode)
+;; Window switching
+(use-package switch-window
+  :ensure t
+  :commands (switch-window switch-window-then-swap-buffer)
+  :bind
+  ("M-P" . switch-window)
+  ("M-C-P" . switch-window-then-swap-buffer))
 
-(setq company-dabbrev-downcase nil)
+;; Visual replacing
+(use-package visual-regexp
+  :ensure t)
 
-(global-set-key (kbd "C-c TAB") 'company-complete)
+;; Git
+(use-package magit
+  :ensure t
+  :commands (magit-status)
+  :bind
+  ("C-x g" . magit-status)
+  :config
+  (setq magit-save-repository-buffers nil)
+
+  (magit-wip-after-save-mode t)
+  (magit-wip-after-apply-mode t)
+
+  (setq magit-diff-refine-hunk 'all))
+
+(use-package magit-lfs
+  :ensure
+  :after magit)
+
+(use-package magit-gerrit
+  :ensure
+  :after magit)
 
 
-;; ---------------------------------------------------------------------------
-;; Magit
-(ensure-package-installed 'magit)
-(ensure-package-installed 'magit-lfs)
+(use-package multiple-cursors
+  :ensure t
+  :commands (mc/edit-lines mc/mark-next-like-this mc/mark-previous-like-this mc/mark-all-like-this)
+  :bind
+  ("C-c C->" . mc/edit-lines)
+  ("C->"     . mc/mark-next-like-this)
+  ("C-<"     . mc/mark-previous-like-this)
+  ("C-c C-<" . mc/mark-all-like-this))
 
-(setq magit-save-repository-buffers nil)
+(use-package god-mode
+  :ensure t
+  :commands (god-local-mode)
+  :bind
+  ("<escape>" . god-local-mode)
+  ;; Allow "xn" instead of "x n"
+  ("C-x C-1" . delete-other-windows)
+  ("C-x C-2" . split-window-below)
+  ("C-x C-3" . split-window-right)
+  ("C-x C-0" . delete-window)
+  (:map isearch-mode-map
+        ("<escape>" . god-mode-isearch-activate))
+  (:map god-mode-isearch-map
+        ("<escape>" . god-mode-isearch-disable))
+  (:map god-local-mode-map
+        ("." . repeat))
+  :config
+  (setq god-exempt-major-modes nil)
+  (setq god-exempt-predicates nil)
 
-(magit-wip-after-save-mode t)
-(magit-wip-after-apply-mode t)
+  (defun my-update-cursor ()
+    (setq cursor-type (if (or god-local-mode buffer-read-only)
+                          'box
+                        'bar)))
+  (add-hook 'god-mode-enabled-hook 'my-update-cursor)
+  (add-hook 'god-mode-disabled-hook 'my-update-cursor)
 
-(setq magit-diff-refine-hunk 'all)
+  (add-to-list 'god-exempt-major-modes 'dired-mode)
+  (add-to-list 'god-exempt-major-modes 'magit-mode))
 
-(global-set-key (kbd "C-x g") 'magit-status)
+(use-package projectile
+  :ensure t
+  :bind (;("C-x s" . projectile-switch-open-project)
+	 ("C-x p" . projectile-switch-project))
+  :config
+  (projectile-mode)
+  (setq projectile-enable-caching t))
 
-;; ---------------------------------------------------------------------------
-;; Haskell
 
-; haskell-mode
-(ensure-package-installed 'haskell-mode)
-(ensure-package-installed 'intero)
-(ensure-package-installed 'company-ghc)
+(use-package flycheck
+  :ensure t
+  :config (global-flycheck-mode))
 
-(add-hook 'haskell-mode-hook 'intero-mode)
-(add-hook 'haskell-mode-hook 'company-mode)
+(use-package company
+  :ensure t
+  :defer t
+  :bind
+  ("<C-tab>" . company-complete)
+  :config
+  (progn
+    (global-company-mode)
+    ;; Use Company for completion
+    (bind-key [remap completion-at-point] #'company-complete company-mode-map)
 
-(with-eval-after-load 'intero
+    (setq company-tooltip-align-annotations t
+          ;; Easy navigation to candidates with M-<n>
+          company-show-numbers t)
+    (setq company-dabbrev-downcase nil))
+  :diminish company-mode)
+
+(use-package company-quickhelp          ; Documentation popups for Company
+  :after (company)
+  :ensure t
+  :defer t
+  :config (add-hook 'global-company-mode-hook #'company-quickhelp-mode))
+
+
+(use-package lsp-mode
+  :ensure t
+  :requires flycheck)
+
+(use-package lsp-ui
+  :ensure t
+  :after (flycheck lsp-mode))
+
+
+;; Languages
+
+;; LaTeX
+(use-package tex
+  :ensure auctex
+  :bind (:map LaTeX-mode-map
+	   ("C-c ]" . org-ref-helm-insert-cite-link)
+	   ("C-c C-o" . org-ref-latex-click))
+  :config
+  (add-to-list 'TeX-command-list '("Make" "make" TeX-run-command nil t))
+  (add-hook 'LaTeX-mode-hook
+	    (lambda ()
+	      (progn
+	        (paren-toggle-matching-quoted-paren 1)
+	        (paren-toggle-matching-paired-delimiter 1)))))
+
+(use-package intero
+  :after (flycheck company)
+  :config
+  (add-hook 'haskell-mode-hook 'intero-mode)
+  (add-hook 'haskell-mode-hook 'company-mode)
+
+  (setq haskell-stylish-on-save t)
+
   (flycheck-add-next-checker 'intero '(warning . haskell-hlint)))
 
-
-(setq haskell-stylish-on-save t)
-
-(speedbar-add-supported-extension ".hs")
-
-;; ---------------------------------------------------------------------------
-;; yaml
-(ensure-package-installed 'yaml-mode)
-
-;; ---------------------------------------------------------------------------
-;; Docker
-(ensure-package-installed 'dockerfile-mode)
-
-;; ---------------------------------------------------------------------------
-;; nix-mode
-(ensure-package-installed 'nix-mode)
-
-;; ---------------------------------------------------------------------------
-;; lsp-mode
-(ensure-package-installed 'lsp-mode)
-
-;; ---------------------------------------------------------------------------
-;; God-mode
-(ensure-package-installed 'god-mode)
-
-(require 'god-mode)
-
-(defun my-update-cursor ()
-  (setq cursor-type (if (or god-local-mode buffer-read-only)
-                        'box
-                      'bar)))
-
-(global-set-key (kbd "<escape>") 'god-local-mode)
-(setq god-exempt-major-modes nil)
-(setq god-exempt-predicates nil)
-
-(add-hook 'god-mode-enabled-hook 'my-update-cursor)
-(add-hook 'god-mode-disabled-hook 'my-update-cursor)
-
-(require 'god-mode-isearch)
-(define-key isearch-mode-map (kbd "<escape>") 'god-mode-isearch-activate)
-(define-key god-mode-isearch-map (kbd "<escape>") 'god-mode-isearch-disable)
-(define-key god-local-mode-map (kbd ".") 'repeat)
-
-(global-set-key (kbd "C-x C-1") 'delete-other-windows)
-(global-set-key (kbd "C-x C-2") 'split-window-below)
-(global-set-key (kbd "C-x C-3") 'split-window-right)
-(global-set-key (kbd "C-x C-0") 'delete-window)
-
-(add-to-list 'god-exempt-major-modes 'dired-mode)
-(add-to-list 'god-exempt-major-modes 'magit-mode)
-
-
-;; ---------------------------------------------------------------------------
-;; multiple-cursors
-(ensure-package-installed 'multiple-cursors)
-
-(require 'multiple-cursors)
-
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-
-
-;; ---------------------------------------------------------------------------
-;; LaTeX
-(ensure-package-installed 'auctex)
-(ensure-package-installed 'mic-paren)
-
-(add-hook 'LaTeX-mode-hook
-	  (lambda ()
-	     (progn
-	       (paren-toggle-matching-quoted-paren 1)
-	       (paren-toggle-matching-paired-delimiter 1)
-
-	       (local-set-key (kbd "C-c ]") 'org-ref-helm-insert-cite-link)
-	       (local-set-key (kbd "C-c C-o") 'org-ref-latex-click)
-	       (add-to-list 'TeX-command-list '("Make" "make" TeX-run-command nil t)))))
-
-;; ---------------------------------------------------------------------------
+;; purescript
+(use-package purescript-mode :ensure t)
+(use-package psc-ide
+  :ensure t
+  :after (flycheck company)
+  :config
+  (add-hook 'purescript-mode-hook
+            (lambda ()
+              (psc-ide-mode)
+              (company-mode)
+              (flycheck-mode)
+              (turn-on-purescript-indentation))))
 ;; markdown
-(ensure-package-installed 'markdown-mode)
+(use-package markdown-mode
+  :ensure t)
 
-;; ---------------------------------------------------------------------------
 ;; R
-(ensure-package-installed 'ess)
-(require 'ess)
+(use-package ess
+  :ensure t
+  :commands R)
 
-;; ---------------------------------------------------------------------------
-;; idris
-(ensure-package-installed 'idris-mode)
-(require 'idris-mode)
+;; python
+(use-package python
+  :ensure t
+  :mode ("\\.py\\'" . python-mode)
+  :interpreter ("python" . python-mode))
 
 
-;; Org-mode
+(use-package lsp-python
+  :ensure t
+  :requires lsp-mode
+  :hook
+  (python-mode-hook . lsp-python-enable)
+  (python-mode-hook . lsp-ui-mode))
 
-; Must have org-mode loaded before we can configure org-babel
-(require 'org-install)
 
-; Some initial langauges we want org-babel to support
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '(
-   (shell . t)
-   (python . t)
-   (R . t)
-   (ruby . t)
-   (ditaa . t)
-   (dot . t)
-   (octave . t)
-   (sqlite . t)
-   (perl . t)
-   ))
+;; C/C++
+;(load-file "/Users/herwig/.nix-profile/bin/../share/emacs/site-lisp/rtags/rtags.el")
+;(use-package rtags
+;  :ensure t
+;  :ensure-system-package rtags
+;  )
 
-(setq org-confirm-babel-evaluate nil)
+(use-package flycheck-rtags
+  :ensure t
+  :after (flycheck rtags))
 
-; Automatically set task to DONE if all children are DONE.
-(defun org-summary-todo (n-done n-not-done)
-  "Switch entry to DONE when all subentries are done, to TODO otherwise."
-  (let (org-log-done org-log-states)   ; turn off logging
-    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+;; nix
+(use-package nix-mode
+  :ensure t
+  :mode ("\\.nix\\'" . nix-mode))
 
-(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+;; org
+(use-package org
+  :ensure t)
 
-(setq org-highlight-latex-and-related '(latex script entities))
+(use-package org-ref
+  :ensure t
+  :after org
+  :config
+  (require 'org-ref-latex))
 
-(setq org-latex-listings t)
-(setq org-latex-listings-langs (quote ((emacs-lisp "Lisp") (lisp "Lisp") (clojure "Lisp") (c "C") (cc "C++") (fortran "fortran") (perl "Perl") (cperl "Perl") (python "Python") (ruby "Ruby") (html "HTML") (xml "XML") (tex "TeX") (latex "TeX") (shell-script "bash") (gnuplot "Gnuplot") (ocaml "Caml") (caml "Caml") (sql "SQL") (sqlite "sql") (R-mode "R"))))
 
-(speedbar-add-supported-extension ".org")
+;; Haskell
+(use-package company-ghc
+  :after (company ghc)
+  :config
+  (push 'company-ghc company-backends))
 
-(ensure-package-installed 'org-ref)
-(require 'org-ref)
-(require 'org-ref-latex)
 
-;; ---------------------------------------------------------------------------
-;; Customization
-
+;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (magit god-mode company-ghc atom-one-dark-theme))))
-
+ '(package-selected-packages
+   (quote
+    (visual-regexp purescript-mode purescript psc-ide intero flycheck-rtags rtags nix-mode projectile lsp-python lsp-ui lsp-mode org-ref org-ref-latex ess auctex god-mode-isearch god-mode multiple-cursors company-quickhelp magit doom-themes auto-package-update use-package-ensure-system-package system-packages exec-path-from-shell use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+
+(provide 'emacs)
+;;; emacs ends here
