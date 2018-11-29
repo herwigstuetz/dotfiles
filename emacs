@@ -327,6 +327,12 @@
   :ensure t
   :mode ("\\.nix\\'" . nix-mode))
 
+;; yaml
+(use-package yaml-mode
+  :ensure t
+  :commands (yaml-mode)
+  :mode ("\\.yaml\\'" . yaml-mode))
+
 ;; org
 (use-package org
   :ensure t)
@@ -353,7 +359,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (visual-regexp purescript-mode purescript psc-ide intero flycheck-rtags rtags nix-mode projectile lsp-python lsp-ui lsp-mode org-ref org-ref-latex ess auctex god-mode-isearch god-mode multiple-cursors company-quickhelp magit doom-themes auto-package-update use-package-ensure-system-package system-packages exec-path-from-shell use-package))))
+    (yaml-mode visual-regexp purescript-mode purescript psc-ide intero flycheck-rtags rtags nix-mode projectile lsp-python lsp-ui lsp-mode org-ref org-ref-latex ess auctex god-mode-isearch god-mode multiple-cursors company-quickhelp magit doom-themes auto-package-update use-package-ensure-system-package system-packages exec-path-from-shell use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
