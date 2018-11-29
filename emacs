@@ -153,9 +153,6 @@
   :config
   (setq magit-save-repository-buffers nil)
 
-  (magit-wip-after-save-mode t)
-  (magit-wip-after-apply-mode t)
-
   (setq magit-diff-refine-hunk 'all))
 
 (use-package magit-lfs
