@@ -36,11 +36,6 @@ if command -v stack >/dev/null 2>&1; then
    eval "$(stack --bash-completion-script stack)"
 fi
 
-# setup nix environment
-if [ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ] ; then
-    source $HOME/.nix-profile/etc/profile.d/nix.sh
-fi
-
 if [ `uname` == "Darwin" ]; then
     alias ls="ls -G"
 elif [ `uname` == "Linux" ]; then
